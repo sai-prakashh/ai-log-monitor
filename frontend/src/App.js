@@ -140,7 +140,7 @@ document.head.appendChild(globalStyle);
 /* ─── FIX: use env variable instead of hardcoded localhost ─── */
 /* In production (Render): set REACT_APP_API_URL to your backend URL  */
 /* In development: falls back to localhost:5000                        */
-const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API = process.env.REACT_APP_API_URL || "https://ai-log-monitor-backend.onrender.com/api/auth/login";
 
 const SEVERITY_RANK = { CRITICAL: 3, ERROR: 2, WARNING: 1, INFO: 0 };
 
