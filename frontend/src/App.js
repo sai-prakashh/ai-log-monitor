@@ -345,7 +345,7 @@ function App() {
               <input className="input-field" type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} onKeyDown={e => e.key === "Enter" && (isRegister ? register() : login())} />
             </div>
             <button onClick={() => (isRegister ? register() : login())}> style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", padding: "10px", borderRadius: 4, cursor: "pointer", background: "linear-gradient(135deg, #1f6feb, #388bfd)", border: "none", color: "#fff", marginTop: 4, transition: "opacity 0.15s" }}
-              onMouseOver={e => e.target.style.opacity = 0.85} onMouseOut={e => e.target.style.opacity = 1}>
+              onMouseOver={e => e.target.style.opacity = 0.85} onMouseOut={e => e.target.style.opacity = 1}
               {isRegister ? "Create Account" : "Sign In"} →
             </button>
             <p onClick={() => setIsRegister(!isRegister)} style={{ textAlign: "center", fontSize: 11, color: "#484f58", fontFamily: "'IBM Plex Mono',monospace", cursor: "pointer", transition: "color 0.15s" }}
