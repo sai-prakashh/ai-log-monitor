@@ -303,6 +303,7 @@ function App() {
   };
 
   const login = async () => {
+    console.log("LOGIN CLICKED");
     const res = await fetch(`${API}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -343,7 +344,7 @@ function App() {
               <label style={{ display: "block", fontSize: 10, color: "#8b949e", fontFamily: "'IBM Plex Mono',monospace", marginBottom: 5, textTransform: "uppercase", letterSpacing: "0.08em" }}>Password</label>
               <input className="input-field" type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} onKeyDown={e => e.key === "Enter" && (isRegister ? register() : login())} />
             </div>
-            <button onClick={isRegister ? register : login} style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", padding: "10px", borderRadius: 4, cursor: "pointer", background: "linear-gradient(135deg, #1f6feb, #388bfd)", border: "none", color: "#fff", marginTop: 4, transition: "opacity 0.15s" }}
+            <button onClick={() => (isRegister ? register() : login())}> style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", padding: "10px", borderRadius: 4, cursor: "pointer", background: "linear-gradient(135deg, #1f6feb, #388bfd)", border: "none", color: "#fff", marginTop: 4, transition: "opacity 0.15s" }}
               onMouseOver={e => e.target.style.opacity = 0.85} onMouseOut={e => e.target.style.opacity = 1}>
               {isRegister ? "Create Account" : "Sign In"} →
             </button>
