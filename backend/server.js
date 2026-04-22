@@ -12,38 +12,48 @@ const { apiLimiter }   = require("./middleware/rateLimiter");
 const app    = express();
 const server = http.createServer(app);
 
-// ── CORS: allow your Render frontend URL + localhost for dev ────────────────
-const allowedOrigins = [
-  "http://localhost:3000",
-  process.env.FRONTEND_URL    // set this in Render env vars
-].filter(Boolean);
+// ── CORS origin checker ─────────────────────────────────────────────────────
+// Allows:
+//   1. localhost (local dev)
+//   2. Any *.onrender.com domain (all your Render services)
+//   3. FRONTEND_URL env var if you want to lock it to one specific URL later
+function isAllowedOrigin(origin) {
+  if (!origin) return true;                          // curl, mobile, server-to-server
+  if (origin === "http://localhost:3000") return true;
+  if (origin === "http://localhost:5000") return true;
+  if (origin.endsWith(".onrender.com"))  return true; // ← covers ALL your Render services
+  if (process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL) return true;
+  return false;
+}
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (isAllowedOrigin(origin)) {
+      callback(null, true);
+    } else {
+      console.warn("CORS blocked origin:", origin);
+      callback(new Error("Not allowed by CORS: " + origin));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+};
+
+// Apply CORS to ALL routes including preflight OPTIONS requests
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // handle preflight for every route
 
 const io = new Server(server, {
   cors: {
     origin: function (origin, callback) {
-      // allow requests with no origin (mobile apps, curl, etc.)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin) || allowedOrigins.includes("*")) {
-        return callback(null, true);
-      }
-      // In development, allow all
-      if (process.env.NODE_ENV !== "production") return callback(null, true);
-      callback(new Error("Not allowed by CORS"));
+      if (isAllowedOrigin(origin)) callback(null, true);
+      else callback(new Error("Socket CORS blocked: " + origin));
     },
-    credentials: true
+    credentials: true,
+    methods: ["GET", "POST"]
   }
 });
-
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin) || process.env.NODE_ENV !== "production") {
-      return callback(null, true);
-    }
-    callback(new Error("Not allowed by CORS"));
-  },
-  credentials: true
-}));
 
 app.use(express.json());
 app.set("io", io);
@@ -70,8 +80,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api",      alertRoutes);
 app.use("/api",      statsRoutes);
 
-// ── Health check (Render pings this to keep service alive) ──────────────────
-app.get("/health", (req, res) => res.json({ status: "ok", time: new Date() }));
+// ── Health check ────────────────────────────────────────────────────────────
+app.get("/health", (req, res) => {
+  res.json({ status: "ok", time: new Date(), env: process.env.NODE_ENV });
+});
 
 // ── Socket ──────────────────────────────────────────────────────────────────
 io.on("connection", (socket) => {
