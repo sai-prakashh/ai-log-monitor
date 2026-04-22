@@ -244,10 +244,10 @@ function App() {
               <div style={{ width: 32, height: 32, borderRadius: 6, background: "linear-gradient(135deg, #1f6feb, #58a6ff)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>⬡</div>
               <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 13, color: "#58a6ff", fontWeight: 600 }}>AI LOG MONITOR</span>
             </div>
-            <p style={{ fontSize: 11, color: "#484f58", fontFamily: "'IBM Plex Mono',monospace" }}>{isRegister ? "// create account" : "// authenticate to continue"}</p>
+            <p style={{ fontSize: 11, color: "#484f58", fontFamily: "'IBM Plex Mono',monospace" }}>{isRegister ? "// create account" : "authenticate to continue"}</p>
           </div>
 
-          {/* Shows which backend URL is being used — helps debug immediately */}
+          
           <div style={{ background: "#0a0f16", border: "1px solid #21262d", borderRadius: 4, padding: "8px 10px", marginBottom: 16 }}>
             <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9, color: "#484f58", marginBottom: 2 }}>backend url:</p>
             <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: "#58a6ff44", wordBreak: "break-all" }}>{API}</p>

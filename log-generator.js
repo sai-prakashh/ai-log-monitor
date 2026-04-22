@@ -58,7 +58,7 @@ async function sendLog() {
   };
 
   try {
-    const res = await fetch("http://localhost:5000/api/logs", {
+    const res = await fetch("https://ai-log-monitor-backend.onrender.com/api/logs", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
