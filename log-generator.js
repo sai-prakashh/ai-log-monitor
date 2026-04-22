@@ -81,8 +81,8 @@ async function sendLog() {
   }
 }
 
-// 🔁 Continuous logs every 2 sec
-setInterval(sendLog, 2000);
+// 🔁 Continuous logs every 3 sec
+setInterval(sendLog, 3000);
 
 // 🔥 Error spike simulation
 setInterval(() => {

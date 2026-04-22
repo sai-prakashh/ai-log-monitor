@@ -52,8 +52,8 @@ const apiLimiter = createLimiter({
 
 // Log creation: 60 logs / min per IP (prevents spam)
 const logLimiter = createLimiter({
-  windowMs: 60_000,
-  max: 60,
+  windowMs: 60* 100,
+  max: 300,
   message: "Log rate limit exceeded — max 60 logs/min per IP"
 });
 
